@@ -1,0 +1,19 @@
+### Server
+@base_url = http://localhost:5000
+//@base_url = http://10.0.0.47:5000
+
+### Get App Config
+# This test retrieves the application configuration.
+GET {{base_url}}/config/app HTTP/1.1
+content-type: application/json
+Cookie: foo=bar
+
+### Get MQTT Config
+# This test retrieves the MQTT configuration.
+GET {{base_url}}/config/mqtt HTTP/1.1
+content-type: application/json
+
+### Get Matrix Config
+# This test retrieves the Matrix configuration.
+GET {{base_url}}/config/matrix HTTP/1.1
+content-type: application/json

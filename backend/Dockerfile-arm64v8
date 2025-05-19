@@ -1,0 +1,39 @@
+# Use the Node base image for platfrom ARM/v8 for the build process
+FROM --platform=linux/arm64 node:18.18.0 as builder
+
+# Set the working directory inside the container
+WORKDIR /matrix-door-phone-backend
+
+# Copy package.json and package-lock.json files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the source code into the working directory of the container
+COPY . .
+
+# Run the build script: compile TypeScript and copy views: tsc && cp -r src/views dist/ 
+RUN npm run build
+
+# Use a new clean Node base image for ARM/v8 with the specific version for the runtime environment
+FROM --platform=linux/arm64 node:18.18.0
+
+# Set workdir
+WORKDIR /matrix-door-phone-backend
+
+# Copy only the built files and the files required for runtime
+COPY --from=builder /matrix-door-phone-backend/dist ./dist
+COPY package*.json ./
+
+# Install only production dependencies
+RUN npm install --only=production
+
+# Set Node.js environment variable to support module resolution
+ENV NODE_OPTIONS="--experimental-specifier-resolution=node"
+
+# Expose Port 5000
+EXPOSE 5000
+
+# Start the application
+CMD ["node", "dist/app.js"]

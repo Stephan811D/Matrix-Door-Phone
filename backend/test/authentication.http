@@ -1,0 +1,24 @@
+### Server
+@base_url = http://localhost:5000
+//@base_url = http://10.0.0.47:5000
+
+### Generate Magic Link
+# This test generates a magic link for the user "testuser."
+POST {{base_url}}/request-magic-link HTTP/1.1
+content-type: application/json
+
+{
+    "username": "testuser"
+}
+
+### Authenticate Magic Link
+# This test authenticates the generated magic link using the token handed out.
+@token = token
+GET {{base_url}}/authenticate?token={{token}} HTTP/1.1
+content-type: application/json
+
+### Check Auth Status
+# This test checks the authentication status using a session ID.
+@session = session
+GET {{base_url}}/check-auth-status?sessionId={{session}} HTTP/1.1
+content-type: application/json
