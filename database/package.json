@@ -1,0 +1,13 @@
+{
+  "name": "matrix-door-phone-database",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "docker.build.rpi": "docker build -f Dockerfile-arm64v8 -t matrix-door-phone-db .",
+    "docker.build": "docker build -f Dockerfile-x86-64 -t matrix-door-phone-db .",
+    "docker.run": "docker run -d --name matrix-door-phone-db -p 3306:3306 --restart=always --net=matrix-door-phone-network --ip 192.168.0.3 matrix-door-phone-db"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,16 @@
+# Verwenden einer spezifischen Version von MySQL für Konsistenz
+FROM mysql:latest
+
+# Setzen von Umgebungsvariablen für die MySQL-Konfiguration
+ENV MYSQL_DATABASE=matrixDoorPhone
+ENV MYSQL_USER=user
+ENV MYSQL_PASSWORD=password
+ENV MYSQL_ROOT_PASSWORD=password
+ENV MYSQL_RANDOM_ROOT_PASSWORD=yes
+ENV MYSQL_ONETIME_PASSWORD=yes
+
+# Kopieren des initialen SQL-Skripts in das Container-Image
+COPY sql/MatrixDoorPhone.sql /docker-entrypoint-initdb.d/init.sql
+
+# MYSQL_PORT ändern, um Standardports zu vermeiden (erhöht die Sicherheit)
+EXPOSE 3306
