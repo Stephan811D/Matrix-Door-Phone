@@ -2,23 +2,6 @@
 
 **Matrix-Door-Phone** is a prototype implementation of a web-based video intercom system, developed as part of **my master thesis**. The objective was to evaluate whether the open communication protocols **Matrix** and **MQTT** can be used in combination with a **Raspberry Pi 4** to implement a smart home-compatible video doorbell. The system aims to provide similar functionality to commercial solutions such as Ring, but with the addition of **bidirectional video communication** and **smart home integration** using open standards.
 
-## Implementation
-
-The system is composed of three main components:
-
-- **Frontend App** (`matrix-door-phone-frontend`)  
-  A web-based interface built with **TypeScript**, styled using **Bootstrap** and SCSS. It uses **Axios** for API communication, a **Matrix client** for message handling, and an **MQTT client** for real-time updates. The frontend is served via **nginx**.
-
-- **Backend App** (`matrix-door-phone-backend`)  
-  Built with **Node.js** and **Express.js**, the backend handles RESTful API endpoints, communicates with the Matrix homeserver, manages MQTT events, and accesses the database.
-
-- **Database** (`matrix-door-phone-database`)  
-  A **MySQL** database that stores device states, configurations, and communication metadata.
-
-<p align="center">
-  <img src="./screenshots/aedf0bc7-a18b-4c90-8247-f1432ff21228.png" alt="Architecture Diagram" width="80%"/>
-</p>
-
 ## Technologies
 
 <p align="left">
@@ -32,6 +15,29 @@ The system is composed of three main components:
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg" width="40" alt="nginx"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" width="40" alt="Docker"/>
 </p>
+
+## Implementation
+
+The system is composed of three main components:
+
+- **Frontend App** (`matrix-door-phone-frontend`)  
+  A web-based interface built with **TypeScript**, styled using **Bootstrap** and SCSS. It uses **Axios** for API communication, a **Matrix client** for message handling, and an **MQTT client** for real-time updates. The frontend is served via **nginx**.
+
+- **Backend App** (`matrix-door-phone-backend`)  
+  Built with **Node.js** and **Express.js**, the backend handles RESTful API endpoints, communicates with the Matrix homeserver, manages MQTT events, and accesses the database.
+
+- **Database** (`matrix-door-phone-database`)  
+  A **MySQL** database that stores device states, configurations, and communication metadata.
+
+![Software Architecture](./screenshots/software-architecture.png)
+
+
+## System Architecture
+
+The software stack runs on a **Raspberry Pi 4** and is fully containerized using Docker. The system includes a frontend, backend, database, and additional services for maintenance and monitoring. Peripherals such as camera, microphone, speaker, and touchscreen are directly connected to the Pi.
+
+![Prototype Architecture](./screenshots/prototype-architecture.png)
+
 
 ## Containerization
 
@@ -77,21 +83,6 @@ These screens allow dynamic feedback and stepwise interaction control for both u
 During system startup or device reset, the application requires authentication via Matrix. A verification code is displayed together with a time limit, and a login link is sent via the Matrix network.
 
 ![Authentication Screen](./screenshots/auth-screen.png)
-
----
-
-## System Architecture
-
-The software stack runs on a **Raspberry Pi 4** and is fully containerized using Docker. The system includes a frontend, backend, database, and additional services for maintenance and monitoring. Peripherals such as camera, microphone, speaker, and touchscreen are directly connected to the Pi.
-
-![Prototype Architecture](./screenshots/prototype-architecture.png)
-
-The software architecture consists of three major containers:
-- **C1: Frontend App** – Static HTML/SCSS files served via NGINX with TypeScript logic, including Matrix and MQTT clients
-- **C2: Backend App** – Express.js API written in TypeScript that handles database queries and communication with the Matrix homeserver
-- **C3: Database** – MySQL service running in its own container
-
-![Software Architecture](./screenshots/software-architecture.png)
 
 ---
 
