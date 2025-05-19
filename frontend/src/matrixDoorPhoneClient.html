@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="scss/styles.scss">
+
+    <title>matrix-door-phone-frontend</title>
+    <link rel="icon" href="data:,">
+</head>
+
+<body class="overflow-hidden user-select-none">
+
+    <content class="d-flex flex-row justify-content-center align-items-center">
+
+        <div id="loading-screen" class="screen">
+            <div class="screen-content h-100 d-flex flex-column justify-content-center align-items-center">
+                <div class="align-items-center px-5">
+                    <div class="spinner-border text-secondary" role="status">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="authentication-screen" class="screen">
+            <div class="screen-content h-100 d-flex flex-column justify-content-center align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
+                    class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                </svg>
+
+                <h1 id="verification-heading" class="fw-bold mt-5 w-80 text-center">App is not authenticated!</h1>
+
+                <div id="verification-state" class="text-center">
+                    <p class="lead mt-2">A link to authenticate the app was sent.</p>
+
+                    <h2 class="lead mt-4 w-80">Verification code:</h2>
+                    <h1 id="verification-code" class="fw-bold mt-1">219283</h1>
+
+                    <h2 class="lead mt-4 w-80">Remaining time to verify the link:</h2>
+                    <h5 id="verification-time" class="fw-bold mt-1"></h5>
+                </div>
+
+                <button id="reload-app" class="btn btn-primary btn-lg mt-5" style="display:none;"
+                    onclick="window.location.reload()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z">
+                        </path>
+                        <path
+                            d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466">
+                        </path>
+                    </svg>
+                    Reload App
+                </button>
+
+            </div>
+        </div>
+
+        <div id="intro-screen" class="screen" data-order="active">
+            <div class="screen-content h-100 d-flex flex-column justify-content-center align-items-center px-5">
+                <img src="./img/family-picture.png" id="intro-img" alt="Bootstrap Themes">
+                <p id="intro-img-credit" class="text-center">Illustration by vectorjuice on Freepik</p>
+
+                <div class="w-80">
+                    <h1 class="fw-bold mt-1">Welcome to the <br><span id="house-owner">unknown</span> Family.</h1>
+                    <p class="lead mt-1 mb-5">To ring the door bell, please click the button below.</p>
+                </div>
+
+                <div class="d-grid w-100">
+                    <button id="ring-button" type="button" class="btn btn-primary btn-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                            class="bi bi-bell" viewBox="0 0 16 16">
+                            <path
+                                d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z" />
+                        </svg>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- fertig -->
+
+        <div id="call-screen" class="screen">
+            <div class="screen-content h-100 d-flex flex-column justify-content-center align-items-center text-center">
+                <div id="video-container"
+                    class="position-relative d-flex flex-column justify-content-between align-items-center">
+
+                    <div id="call-information"
+                        class="position-absolute d-flex flex-column justify-content-between align-items-center w-100 h-100  pt-4 pb-2 z-1">
+                        <div class="top-information opacity-75">
+                            <h2 id="recipient-name" class="text-white">unknown</h2>
+                            <h5 id="call-type" class="text-white-50">Matrix Video Call</h5>
+                        </div>
+                        <button id="call-button" type="button" class="btn btn-success btn-lg rounded-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                                class="bi bi-telephone-outbound" viewBox="0 0 16 16">
+                                <path
+                                    d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511zM11 .5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V1.707l-4.146 4.147a.5.5 0 0 1-.708-.708L14.293 1H11.5a.5.5 0 0 1-.5-.5z" />
+                            </svg>
+                        </button>
+                        <button id="hang-up-button" type="button" class="btn btn-danger btn-lg rounded-4 d-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                                class="bi bi-telephone-x" viewBox="0 0 16 16">
+                                <path
+                                    d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z" />
+                                <path fill-rule="evenodd"
+                                    d="M11.146 1.646a.5.5 0 0 1 .708 0L13 2.793l1.146-1.147a.5.5 0 0 1 .708.708L13.707 3.5l1.147 1.146a.5.5 0 0 1-.708.708L13 4.207l-1.146 1.147a.5.5 0 0 1-.708-.708L12.293 3.5l-1.147-1.146a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <video id="local-video"
+                        class="h-25 w-25 bg-primary object-fit-cover rounded-3 z-1 m-2 position-absolute bottom-0 end-0"></video>
+                    <video id="remote-video"
+                        class="bg-black object-fit-cover rounded-4 position-absolute h-100 w-100"></video>
+                </div>
+            </div>
+        </div>
+
+        <div id="ring-screen" class="screen" data-order="null">
+            <div class="screen-content h-100 d-flex flex-column justify-content-center align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
+                    class="bi bi-bell-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z" />
+                </svg>
+
+                <h1 class="fw-bold mt-5">The doorbell is ringing...</h1>
+
+                <p class="lead mt-4">Your patience is appreciated.</p>
+            </div>
+        </div>
+
+        <div id="door-screen" class="screen" data-order="null">
+            <div class="screen-content h-100 d-flex flex-column justify-content-center align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
+                    class="bi bi-door-open-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15H1.5zM11 2h.5a.5.5 0 0 1 .5.5V15h-1V2zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z" />
+                </svg>
+
+                <h1 class="fw-bold mt-5 w-75 text-center">The front door has been opened.</h1>
+            </div>
+        </div>
+
+        <div id="error-screen" class="screen" data-order="null">
+            <div class="screen-content h-100 d-flex flex-column justify-content-center align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
+                    class="bi bi-exclamation-octagon-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                </svg>
+
+                <h1 class="fw-bold mt-5 w-75 text-center">Error</h1>
+
+                <p id="error-message" class="lead mt-4 text-center">No connection to backend.</p>
+            </div>
+        </div>
+
+    </content>
+
+    <nav class="navbar fixed-bottom navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand">Matrix Door Phone Client - 2024</a>
+            <ul class="navbar-nav">
+
+                <li class="nav-item dropup">
+                    <button type="button" id="debug-button" class="btn btn-secondary btn-sm dropdown-toggle d-none"
+                        data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
+                        Debug
+                    </button>
+                    <ul id="debug-menu" class="dropdown-menu dropdown-menu-end position-absolute mb-0 ms-n14 d-none">
+                        <li class="list-group-item d-flex justify-content-between align-items-center disabled">
+                            <h6 class="dropdown-header">Matrix-Door Phone Client:</h6>
+                            <span class="pe-3">
+                                <span id="app-version" class="badge bg-primary rounded-pill">not set</span>
+                            </span>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <h6 class="dropdown-header">Matrix-Status:</h6>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center disabled">
+                            <span class="dropdown-item">Server:</span>
+                            <span class="pe-3">
+                                <span id="matrix-server" class="badge bg-secondary rounded-pill">not set</span>
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center disabled">
+                            <span class="dropdown-item">Room:</span>
+                            <span class="pe-3">
+                                <span id="matrix-room" class="badge bg-secondary rounded-pill">not set</span>
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center disabled">
+                            <span class="dropdown-item">Connected:</span>
+                            <span class="pe-3">
+                                <span id="matrix-connection-state" class="badge bg-secondary rounded-pill">not
+                                    set</span>
+                            </span>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <h6 class="dropdown-header">MQTT-Status:</h6>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center disabled">
+                            <span class="dropdown-item">Broker:</span>
+                            <span class="pe-3">
+                                <span id="broker-ip" class="badge bg-secondary rounded-pill">not set</span>
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center disabled">
+                            <span class="dropdown-item">Status:</span>
+                            <span class="pe-3">
+                                <span id="mqtt-connection-state" class="badge bg-secondary rounded-pill">not set</span>
+                            </span>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <h6 class="dropdown-header">Topics:</h6>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center disabled">
+                            <a class="dropdown-item" href="#">Presence-State:</a>
+                            <span class="pe-3">
+                                <span class="state-info badge text-bg-warning" data-id="presence">not set</span>
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center disabled">
+                            <a class="dropdown-item" href="#">Bell-State:</a>
+                            <span class="pe-3">
+                                <span class="state-info badge text-bg-warning" data-id="doorbell">not set</span>
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center disabled">
+                            <a class="dropdown-item" href="#">Door-State:</a>
+                            <span class="pe-3">
+                                <span class="state-info badge text-bg-warning" data-id="door">not set</span>
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center disabled">
+                            <a class="dropdown-item" href="#">DoorOpener-State:</a>
+                            <span class="pe-3">
+                                <span class="state-info badge text-bg-warning" data-id="doorOpener">not set</span>
+                            </span>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <h6 class="dropdown-header">Screens:</h6>
+                        </li>
+                        <li><a class="dropdown-item screen" href="#" data-id="0">0: Loading-Screen</a></li>
+                        <li><a class="dropdown-item screen" href="#" data-id="1">1: Authentication-Screen</a></li>
+                        <li><a class="dropdown-item screen" href="#" data-id="2">2: Intro-Screen</a></li>
+                        <li><a class="dropdown-item screen" href="#" data-id="3">3: Call-Screen</a></li>
+                        <li><a class="dropdown-item screen" href="#" data-id="4">4: Ring-Screen</a></li>
+                        <li><a class="dropdown-item screen" href="#" data-id="5">5: Door-Screen</a></li>
+                        <li><a class="dropdown-item screen" href="#" data-id="6">6: Error-Screen</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!--<script src="./assets/js/browser-matrix.min.js"></script>-->
+    <script type="module" src="./app.ts"></script>
+</body>
+
+</html>

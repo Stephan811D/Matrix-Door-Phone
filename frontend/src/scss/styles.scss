@@ -1,0 +1,52 @@
+@import './abstracts/custom-variables';
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+@import "./abstracts/map-amends";
+@import "~bootstrap/scss/bootstrap";
+
+content {
+
+    width: fit-content;
+
+    .btn-primary {
+        --bs-btn-padding-y: 0.75rem;
+        --bs-btn-border-radius: 2rem;
+    }
+
+    .screen {
+        height: 744px;
+        width: 480px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+        opacity: 0;
+        transition: left 0.25s, opacity 0.5s;
+        transition-timing-function: ease-in-out;
+    }
+}
+
+nav {
+    .dropdown-menu {
+        width: 280px;
+    }
+}
+
+
+#intro-screen {
+    #intro-img {
+        height: 21.25rem;
+    }
+
+    #intro-img-credit {
+        font-size: 0.85rem;
+    }
+}
+
+#call-screen {
+    #video-container {
+        height: 688px;
+        width: 387px;
+    }
+}
