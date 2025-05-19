@@ -1,202 +1,102 @@
-# Sensomat
+# Matrix-Door-Phone
 
-***Sensomat*** is a full-stack web application consisting of a Vue.js single-page frontend and a Laravel backend with a MySQL database, developed as part of my bachelor’s thesis. The goal of the thesis was to examine how business processes related to the operation and stocking of cigarette vending machines can be optimized through software support. In this context, the application was designed and implemented to provide centralized inventory management and status monitoring. The project also explored which technical and functional requirements such a system must fulfill to support vending machine operators effectively and ensure smooth, transparent supervision of machine performance and stock levels.
+**Matrix-Door-Phone** is a prototype implementation of a web-based video intercom system, developed as part of **my master thesis**. The objective was to evaluate whether the open communication protocols **Matrix** and **MQTT** can be used in combination with a **Raspberry Pi 4** to implement a smart home-compatible video doorbell. The system aims to provide similar functionality to commercial solutions such as Ring, but with the addition of **bidirectional video communication** and **smart home integration** using open standards.
 
+## Implementation
 
-## Technologies
+The system is composed of three main components:
 
-**Frontend**: Vue.js (SPA)  
+- **Frontend App** (`matrix-door-phone-frontend`)  
+  A web-based interface built with **TypeScript**, styled using **Bootstrap** and SCSS. It uses **Axios** for API communication, a **Matrix client** for message handling, and an **MQTT client** for real-time updates. The frontend is served via **nginx**.
 
-**Backend**: Laravel (PHP Framework)  
+- **Backend App** (`matrix-door-phone-backend`)  
+  Built with **Node.js** and **Express.js**, the backend handles RESTful API endpoints, communicates with the Matrix homeserver, manages MQTT events, and accesses the database.
 
-**Database**: MySQL  
+- **Database** (`matrix-door-phone-database`)  
+  A **MySQL** database that stores device states, configurations, and communication metadata.
 
-**Styling**: Bootstrap CSS, jQuery  
-
-**Responsive Design**: Optimized for desktops, tablets, and smartphones  
-
-![Responsive](https://img.shields.io/badge/Responsive%20Design-Full%20Support-2ECC71?style=for-the-badge&logo=css3&logoColor=white)
+<p align="center">
+  <img src="./screenshots/aedf0bc7-a18b-4c90-8247-f1432ff21228.png" alt="Architecture Diagram" width="80%"/>
+</p>
 
 ## Technologies
 
 <p align="left">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg" alt="Vue.js" width="40"/> 
-  <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Laravel.svg" alt="Laravel" width="40"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL" width="40"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap" width="40"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jquery/jquery-original.svg" alt="jQuery" width="40"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" width="40"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" width="40"/>
-<p>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" width="40" alt="TypeScript"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" width="40" alt="Node.js"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" width="40" alt="Express.js"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" width="40" alt="MySQL"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" width="40" alt="Bootstrap"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" width="40" alt="HTML5"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg" width="40" alt="SCSS"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg" width="40" alt="nginx"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" width="40" alt="Docker"/>
+</p>
 
-## Architecture
+## Containerization
 
-The application follows a classic three-tier architecture consisting of a Vue.js frontend, a Laravel backend, and a MySQL database.
+The complete system is containerized using **Docker**. Each component (frontend, backend, database) runs in its own container and can be orchestrated via a `docker-compose.yml` file. This allows for reproducible deployments and simplified development and testing.
 
-- **Vue.js Client**: The frontend is a single-page application built with Vue.js. It uses Vue Router for client-side routing and Axios for communication with the backend.
-- **Laravel Backend**: The backend exposes a RESTful API and follows the MVC pattern to process requests and interact with the database.
-- **MySQL Database**: The application stores its data in a relational MySQL database, which is queried and modified by the Laravel backend.
+## Performance Evaluation
 
-Communication between frontend and backend is handled via HTTP requests and JSON responses. The backend translates these into SQL queries for data persistence and retrieval.
+To assess the feasibility of the Raspberry Pi as a deployment platform, the system's **CPU, memory usage, and power consumption** were monitored under different usage conditions using:
 
-<br>
+- **Telegraf (InfluxData)**: to monitor system resource consumption during idle and call states.
+- **Shelly Pro 3 EM**: to measure electrical power consumption in multiple test scenarios (day/night, idle, active, 24h cycle).
 
-![Architecture Diagram](./screenshots/architecture.png)
+The results were compared to those of a commercial Ring doorbell to evaluate overall efficiency and performance.
 
-<br>
 
-## API Overview
+## User Interface
 
-The backend provides a RESTful API built with Laravel. It exposes multiple endpoints to manage products, vending machines, product types, and authentication. The API follows common REST conventions using `apiResource` routes where applicable, and is designed for structured, programmatic access.
+The Matrix Door Phone Client features a modern, touch-optimized interface designed for wall-mounted operation. The welcome screen includes a bell icon for visitors and optionally displays a family or household name. Upon interaction, the system initiates a Matrix-based video call.
 
----
+![Welcome and Call View](./screenshots/welcome-call.png)
 
-### 📦 Product API (`ProductController`)
+The debug interface provides insight into the system state, including the Matrix and MQTT connection status, the active room and broker, as well as live topic values such as doorbell state or presence detection.
 
-| Method | Path                   | Action  | Description                              |
-|--------|------------------------|---------|------------------------------------------|
-| GET    | /api/product           | index   | Returns a list of all products           |
-| POST   | /api/product           | store   | Stores a new product                     |
-| GET    | /api/product/{product} | show    | Returns a specific product               |
-| PUT    | /api/product/{product} | update  | Updates a specific product               |
-| DELETE | /api/product/{product} | destroy | Deletes a specific product               |
+![Status Overview](./screenshots/debug-status.png)
 
----
+Multiple screens are defined to represent the full interaction flow:
+- Loading Screen
+- Authentication Screen
+- Intro Screen
+- Call Screen
+- Ring Screen
+- Door Opened Screen
+- Error Screen
 
-### 🔐 Authentication & Login
+These screens allow dynamic feedback and stepwise interaction control for both users and system events.
 
-| Method | Path                   | Controller           | Description                                 |
-|--------|------------------------|----------------------|---------------------------------------------|
-| POST   | /api/login             | LoginController      | Logs in a user                              |
-| POST   | /api/logout            | LoginController      | Logs out a user                             |
-| GET    | /api/authenticated     | –                    | Checks whether a user is currently logged in|
-| GET    | /sanctum/csrf-cookie   | CsrfCookieController | Returns a CSRF cookie                       |
+![Screen Views](./screenshots/screens.png)
 
 ---
 
-### 🏪 Vending Machine API (`AutomatController`)
+## Authentication Flow
 
-| Method | Path                                | Description                                                           |
-|--------|-------------------------------------|-----------------------------------------------------------------------|
-| GET    | /api/automat                        | Returns a detailed list of all vending machines                       |
-| POST   | /api/automat                        | Stores a new vending machine                                          |
-| GET    | /api/automat/{automat}             | Returns a specific vending machine                                    |
-| PUT    | /api/automat/{automat}             | Updates a specific vending machine                                    |
-| DELETE | /api/automat/{automat}             | Deletes a specific vending machine                                    |
-| GET    | /api/automat/basic/{id}            | Returns a basic view of a specific vending machine                    |
-| GET    | /api/automat/shafts/{id}           | Returns all product slots of a specific vending machine               |
-| GET    | /api/automat/{id}                  | Returns the current status of a specific vending machine              |
-| GET    | /api/automats/basic                | Returns a simplified list of all vending machines                     |
-| GET    | /api/automats/names                | Returns a list of all vending machine names                           |
-| GET    | /api/automats/status               | Returns the fill level status of all vending machines                 |
-| POST   | /api/automat/shafts                | Stores product-slot assignments                                       |
-| POST   | /api/automat/shafts/config         | Stores slot configuration                                             |
+During system startup or device reset, the application requires authentication via Matrix. A verification code is displayed together with a time limit, and a login link is sent via the Matrix network.
+
+![Authentication Screen](./screenshots/auth-screen.png)
 
 ---
 
-### 🗂️ Product Type API (`ProductTypeController`)
+## System Architecture
 
-| Method | Path                                 | Description                                         |
-|--------|--------------------------------------|-----------------------------------------------------|
-| GET    | /api/productType                     | Returns a detailed list of all product types        |
-| POST   | /api/productType                     | Stores a new product type                           |
-| GET    | /api/productType/{productType}       | Returns a specific product type                     |
-| PUT    | /api/productType/{productType}       | Updates a specific product type                     |
-| DELETE | /api/productType/{productType}       | Deletes a specific product type                     |
-| GET    | /api/productTypes/basic              | Returns a simplified list of all product types      |
+The software stack runs on a **Raspberry Pi 4** and is fully containerized using Docker. The system includes a frontend, backend, database, and additional services for maintenance and monitoring. Peripherals such as camera, microphone, speaker, and touchscreen are directly connected to the Pi.
 
+![Prototype Architecture](./screenshots/prototype-architecture.png)
 
-## ✨ Features
+The software architecture consists of three major containers:
+- **C1: Frontend App** – Static HTML/SCSS files served via NGINX with TypeScript logic, including Matrix and MQTT clients
+- **C2: Backend App** – Express.js API written in TypeScript that handles database queries and communication with the Matrix homeserver
+- **C3: Database** – MySQL service running in its own container
 
-### 🔑 Login
+![Software Architecture](./screenshots/software-architecture.png)
 
-Users authenticate via a login form before accessing the system.
+---
 
-![Login](./screenshots/login.png)
+## CI/CD and Deployment
 
-### 📊 Dashboard
+The system uses a container-based CI/CD pipeline. Code is pushed to GitHub, where it triggers Docker image builds and deployments to Docker Hub. Watchtower on the Raspberry Pi automatically pulls and replaces containers once new images are available. This setup allows unattended and stable updates in the field.
 
-The dashboard provides a quick overview of all vending machines. Machines are displayed with fill level indicators, and users can navigate to a detailed view.
-
-![Dashboard](./screenshots/dashboard.png)
-
-### 🖨️ Detailed Machine View
-
-Each vending machine shows:
-
-- Temperature and humidity readings
-- Current fill level
-- WiFi status with IP address and last connection
-- Door status and last opening time
-- Inventory overview with capacity and current stock per product
-
-![Detailed View](./screenshots/machine_detail.png)
-
-### ⚙️ Vending Machine Management
-
-Machines can be added and managed, including location data like:
-
-- Street
-- City
-- Region
-- Country
-
-![Machine Management](./screenshots/machine_config.png)
-
-### 🔽 Slot Configuration
-
-Slot data can be configured per machine. Each slot has:
-
-- Physical length in millimeters
-- Maximum product capacity in packages
-
-![Slot Lengths](./screenshots/slot_lengths.png)
-
-Users can assign products to specific slots.
-
-![Slot Products](./screenshots/slot_products.png)
-
-### 🍌 Product Management
-
-A dedicated section allows for managing the product catalog:
-
-- Add, edit or delete products
-- Set product attributes such as name, price, color, and category
-- Assign products to vending machines
-
-![Product Management](./screenshots/products.png)
-
-Product editing is done through a modal dialog.
-
-![Edit Product](./screenshots/edit_product.png)
-
-### 🌈 Product Categories
-
-Users can manage product categories (e.g. cigarettes, cigars) and set category-specific parameters like product depth.
-
-![Product Categories](./screenshots/product_categories.png)
-
-## 📱 Responsive Web Design
-
-The interface adapts seamlessly to different screen sizes. On smaller devices, a mobile menu replaces the sidebar and content is reorganized for optimal usability.
-
-The following examples show the interface on mobile devices:
-
-- **Mobile Menu View**  
-  A compact menu replaces the full sidebar.
-
-  ![Mobile Menu](./screenshots/mobile_menu.png)
-
-- **Mobile Product View**  
-  Products are displayed in a stacked layout, preserving full functionality.
-
-  ![Mobile Products](./screenshots/mobile_products.png)
-
-- **Mobile Toast Notification**  
-  Confirmation messages such as successful product addition are shown via toast alerts.
-
-  ![Mobile Toast](./screenshots/mobile_toast.png)
-
-## License
-
-This project was developed for academic purposes as part of a bachelor's thesis. It is provided without warranty.
+![CI/CD Pipeline](./screenshots/cicd.png)
